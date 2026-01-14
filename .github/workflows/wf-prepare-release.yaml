@@ -1,0 +1,113 @@
+---
+on:
+  workflow_call:
+    inputs:
+      changelog:
+        type: string
+        description: Relative path to the CHANGELOG file
+        required: false
+        default: CHANGELOG.md
+      bump_type:
+        type: string
+        description: Semantic version bump type. Must be one of `major`, `minor`, `patch`, or `exact`. Using the first three options will compute the next appropriate semantic version tag based on the most recent tag available from the main branch. Using `exact` is required for repositories without semantic version tags and allows specifying the exact next tag to use with the `exact_version` argument.
+        required: true
+      prerelease:
+        type: boolean
+        description: Mark this semantic version bump as a pre-release. Only used if bump_type is not set to `exact`.
+        required: false
+        default: false
+      exact_version:
+        type: string
+        description: Exact non-semantic version number to target. Only used if bump_type is set to `exact`.
+        required: false
+        default: ""
+      timezone:
+        type: string
+        description: IANA timezone to use when computing the current date
+        default: "America/Los_Angeles"
+        required: false
+      version_files:
+        type: string
+        description: Comma-separated list of relative paths to files with version numbers that should be updated. Every file must have exactly one line that looks like `version = "xxxx"` - some effort is made to handle different quoting styles, leading underscores, etc.
+        required: false
+        default: ""
+
+jobs:
+  prepare-release:
+    runs-on: ubuntu-latest
+
+    env:
+      BUMP_TYPE: ${{ inputs.bump_type }}
+      PRERELEASE: ${{ inputs.prerelease }}
+      EXACT_VERSION: ${{ inputs.exact_version }}
+      CHANGELOG_TIMEZONE: ${{ inputs.timezone }}
+
+    steps:
+      # Get the version of _this_ repository that is in use so that we can use
+      # sidecar scripts
+      - id: workflow-parsing
+        name: Get SHA of reusuable workflow
+        env:
+          REPO: ${{ github.repository }}
+          RUN_ID: ${{ github.run_id }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          ACTION_DATA=$(gh api "repos/$REPO/actions/runs/$RUN_ID")
+          echo "::debug::$ACTION_DATA"
+          SHA=$(echo "$ACTION_DATA" | jq -r '.referenced_workflows | .[] | select(.path | startswith("Boutros-Lab-SBP/tool-create-release")).sha')
+          echo "SHA=$SHA" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout reusable repository
+        uses: actions/checkout@v5
+        with:
+          repository: Boutros-Lab-SBP/tool-create-release
+          path: reusable
+          ref: ${{ steps.workflow-parsing.outputs.SHA }}
+          token: ${{ secrets.BL_SBP_REPO_READ_TOKEN_YP }}
+
+      - name: Checkout calling repository
+        uses: actions/checkout@v5
+        with:
+          path: caller
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Set up python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.10'
+
+      # Install the bundled package
+      - run: pip install ./reusable
+
+      # Get the next version using the package's script
+      - id: get-next-version
+        run: get-next-version "$REPO_DIR" "$BUMP_TYPE" "$PRERELEASE" "$EXACT_VERSION"
+        env:
+          REPO_DIR: caller
+
+      # Update the CHANGELOG
+      - id: bump-changelog
+        run: bump-changelog "$CHANGELOG" "$URL" "$VERSION"
+        env:
+          CHANGELOG: caller/${{ inputs.changelog }}
+          URL: ${{ github.server_url }}/${{ github.repository }}
+          VERSION: ${{ steps.get-next-version.outputs.next_version }}
+
+      - id: bump-version-files
+        run: bump-version-files "$REPO_DIR" "$VERSION" "$VERSIONFILES"
+        env:
+          REPO_DIR: caller
+          VERSION: ${{ steps.get-next-version.outputs.next_version }}
+          VERSIONFILES: ${{ inputs.version_files }}
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.BL_SBP_REPO_READ_TOKEN_YP }}
+          path: caller
+          add-paths: ${{ inputs.changelog }},${{ inputs.version_files }}
+          commit-message: ${{ steps.bump-changelog.outputs.commit_message }}
+          title: ${{ steps.bump-changelog.outputs.pr_title }}
+          body-path: ${{ steps.bump-changelog.outputs.pr_bodyfile }}
+          branch: ${{ steps.get-next-version.outputs.branch_name }}
