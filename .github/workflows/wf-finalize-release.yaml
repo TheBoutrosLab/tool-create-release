@@ -1,0 +1,50 @@
+---
+on:
+  workflow_call:
+    inputs:
+      draft:
+        description: If true (the default), draft the release for later manual approval.
+        type: boolean
+        default: true
+
+jobs:
+  finalize-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Get the version of _this_ repository that is in use so that we can use
+      # sidecar scripts
+      - id: workflow-parsing
+        name: Get SHA of reusuable workflow
+        env:
+          REPO: ${{ github.repository }}
+          RUN_ID: ${{ github.run_id }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          ACTION_DATA=$(gh api "repos/$REPO/actions/runs/$RUN_ID")
+          echo "::debug::$ACTION_DATA"
+          SHA=$(echo "$ACTION_DATA" | jq -r '.referenced_workflows | .[] | select(.path | startswith("uclahs-cds/tool-create-release")).sha')
+          echo "SHA=$SHA" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout reusable repository
+        uses: actions/checkout@v5
+        with:
+          repository: uclahs-cds/tool-create-release
+          path: reusable
+          ref: ${{ steps.workflow-parsing.outputs.SHA }}
+          token: ${{ secrets.UCLAHS_CDS_REPO_READ_TOKEN }}
+
+      - name: Set up python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.10'
+
+      # Install the bundled package
+      - run: pip install ./reusable
+
+      - name: Finalize release
+        run: finalize-release "$DRAFT"
+        env:
+          DRAFT: ${{ inputs.draft }}
+          # Use the other token to allow the aliasing workflow to run
+          GH_TOKEN: ${{ secrets.UCLAHS_CDS_REPO_READ_TOKEN }}
