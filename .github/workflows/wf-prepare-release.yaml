@@ -54,13 +54,13 @@ jobs:
         run: |
           ACTION_DATA=$(gh api "repos/$REPO/actions/runs/$RUN_ID")
           echo "::debug::$ACTION_DATA"
-          SHA=$(echo "$ACTION_DATA" | jq -r '.referenced_workflows | .[] | select(.path | startswith("uclahs-cds/tool-create-release")).sha')
+          SHA=$(echo "$ACTION_DATA" | jq -r '.referenced_workflows | .[] | select(.path | startswith("Boutros-Lab-SBP/tool-create-release")).sha')
           echo "SHA=$SHA" >> "$GITHUB_OUTPUT"
 
       - name: Checkout reusable repository
         uses: actions/checkout@v5
         with:
-          repository: uclahs-cds/tool-create-release
+          repository: Boutros-Lab-SBP/tool-create-release
           path: reusable
           ref: ${{ steps.workflow-parsing.outputs.SHA }}
           token: ${{ secrets.UCLAHS_CDS_REPO_READ_TOKEN }}
