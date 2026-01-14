@@ -32,7 +32,7 @@ jobs:
           repository: Boutros-Lab-SBP/tool-create-release
           path: reusable
           ref: ${{ steps.workflow-parsing.outputs.SHA }}
-          token: ${{ secrets.UCLAHS_CDS_REPO_READ_TOKEN }}
+          token: ${{ secrets.BL_SBP_REPO_READ_TOKEN_YP }}
 
       - name: Set up python
         uses: actions/setup-python@v6
@@ -47,4 +47,4 @@ jobs:
         env:
           DRAFT: ${{ inputs.draft }}
           # Use the other token to allow the aliasing workflow to run
-          GH_TOKEN: ${{ secrets.UCLAHS_CDS_REPO_READ_TOKEN }}
+          GH_TOKEN: ${{ secrets.BL_SBP_REPO_READ_TOKEN_YP }}

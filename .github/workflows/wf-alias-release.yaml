@@ -27,7 +27,7 @@ jobs:
           repository: Boutros-Lab-SBP/tool-create-release
           path: reusable
           ref: ${{ steps.workflow-parsing.outputs.SHA }}
-          token: ${{ secrets.UCLAHS_CDS_REPO_READ_TOKEN }}
+          token: ${{ secrets.BL_SBP_REPO_READ_TOKEN_YP }}
 
       - name: Checkout calling repository
         uses: actions/checkout@v5
