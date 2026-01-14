@@ -1,6 +1,6 @@
 # Automations for GitHub Releases
 
-<!-- [![GitHub release](https://img.shields.io/github/v/release/uclahs-cds/tool-create-release)](https://github.com/uclahs-cds/tool-create-release/actions/workflows/internal-prepare.yaml) -->
+[![GitHub release](https://img.shields.io/github/v/release/Boutros-Lab-SBP/tool-create-release)](https://github.com/Boutros-Lab-SBP/tool-create-release/actions/workflows/internal-prepare.yaml)
 
 * [Versioning Standards](#versioning-standards)
 * [Usage](#usage)
