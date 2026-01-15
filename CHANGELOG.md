@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+
+- Update org to `TheBoutrosLab`
+
 ## [1.0.0] - 2026-01-14
 
 ## [0.0.2] - 2026-01-14
@@ -15,36 +21,3 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Update links in on-prem Confluence to point to cloud-based Confluence
 - Update `.gitignore` - Add common non-plain text file extensions (e.g. image and Office suite)
 - Change something but it is not part of the last release.
-
-## [1.0.0] - YYYY-MM-DD
-
-### Added
-
-- For new features.
-- Add item 1.
-
-### Changed
-
-- For changes in existing functionality.
-- Change item 1.
-
-### Deprecated
-
-- For soon-to-be removed features.
-
-### Removed
-
-- For now removed features.
-- Remove item 1.
-
-### Fixed
-
-- For any bug fixes.
-- Fix item 1.
-
-### Security
-
-- In case of vulnerabilities.
-
-[0.0.2]: https://github.com/Boutros-Lab-SBP/tool-create-release/compare/v1.0.0...v0.0.2
-[1.0.0]: https://github.com/Boutros-Lab-SBP/tool-create-release/compare/v0.0.2...v1.0.0

@@ -1,6 +1,6 @@
 # Automations for GitHub Releases
 
-[![GitHub release](https://img.shields.io/github/v/release/Boutros-Lab-SBP/tool-create-release)](https://github.com/Boutros-Lab-SBP/tool-create-release/actions/workflows/internal-prepare.yaml)
+[![GitHub release](https://img.shields.io/github/v/release/TheBoutrosLab/tool-create-release)](https://github.com/TheBoutrosLab/tool-create-release/actions/workflows/internal-prepare.yaml)
 
 * [Versioning Standards](#versioning-standards)
 * [Usage](#usage)
@@ -90,13 +90,13 @@ Usage of this tool requires adding three workflows to each calling repository (n
 You can add a badge that links to the release preparation workflow by including one of these Markdown snippets (after replacing `ORG` and `REPO`) to your README:
 
 #### Public Repository
-[![GitHub release](https://img.shields.io/github/v/release/Boutros-Lab-SBP/tool-create-release)](https://github.com/Boutros-Lab-SBP/tool-create-release/actions/workflows/internal-prepare.yaml)
+[![GitHub release](https://img.shields.io/github/v/release/TheBoutrosLab/tool-create-release)](https://github.com/TheBoutrosLab/tool-create-release/actions/workflows/internal-prepare.yaml)
 ```
 [![GitHub release](https://img.shields.io/github/v/release/ORG/REPO)](https://github.com/ORG/REPO/actions/workflows/prepare-release.yaml)
 ```
 
 #### Private / Internal Repository
-[![Prepare release](https://img.shields.io/badge/Action-Create%20New%20Release-blue)](https://github.com/Boutros-Lab-SBP/tool-create-release/actions/workflows/internal-prepare.yaml)
+[![Prepare release](https://img.shields.io/badge/Action-Create%20New%20Release-blue)](https://github.com/TheBoutrosLab/tool-create-release/actions/workflows/internal-prepare.yaml)
 ```
 [![Prepare release](https://img.shields.io/badge/Action-Create%20New%20Release-blue)](https://github.com/ORG/REPO/actions/workflows/prepare-release.yaml)
 ```

@@ -18,7 +18,7 @@ permissions:
 
 jobs:
   prepare-release:
-    uses: Boutros-Lab-SBP/tool-create-release/.github/workflows/wf-prepare-release.yaml@v1
+    uses: TheBoutrosLab/tool-create-release/.github/workflows/wf-prepare-release.yaml@v1
     with:
       bump_type: "exact"
       exact_version: ${{ inputs.version }}
