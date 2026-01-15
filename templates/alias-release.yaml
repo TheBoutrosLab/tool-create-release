@@ -15,5 +15,5 @@ permissions:
 
 jobs:
   update-alias:
-    uses: Boutros-Lab-SBP/tool-create-release/.github/workflows/wf-alias-release.yaml@v1
+    uses: TheBoutrosLab/tool-create-release/.github/workflows/wf-alias-release.yaml@v1
     secrets: inherit
