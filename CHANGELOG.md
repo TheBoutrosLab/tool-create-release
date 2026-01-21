@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleaesd]
+
+### Changed
+
+- Update checkout action to `v6`
+- Update create pull request action to `v8`
+- Update upload artifact action to `v6`
+
 ## [1.1.0] - 2026-01-15
 
 ### Changed
