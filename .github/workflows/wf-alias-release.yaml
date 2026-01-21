@@ -22,7 +22,7 @@ jobs:
           echo "SHA=$SHA" >> "$GITHUB_OUTPUT"
 
       - name: Checkout reusable repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           repository: TheBoutrosLab/tool-create-release
           path: reusable
@@ -30,7 +30,7 @@ jobs:
           token: ${{ secrets.BL_SBP_REPO_READ_TOKEN_YP }}
 
       - name: Checkout calling repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           path: caller
           fetch-depth: 0
