@@ -34,7 +34,7 @@ jobs:
           tox -e py${{matrix.python-version}}
 
       - name: Upload pytest test results
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         if: success() || failure()
         with:
           name: "pytest-${{ matrix.python-version }}.xml"
