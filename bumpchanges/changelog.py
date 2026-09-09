@@ -381,7 +381,7 @@ class Changelog:
             raise ChangelogError("No versions!")
 
     def update_version(self, next_version: str, date: datetime.date):
-        """Move all unreleased changes under the new version."""
+        """Release pending changes and leave an empty Unreleased section."""
         if (
             not self.versions
             or self.versions[0].version_str != ChangelogVersion.UNRELEASED_VERSION
@@ -392,10 +392,10 @@ class Changelog:
             )
             self.versions.insert(0, ChangelogVersion.blank_unreleased())
 
-        # Change the version and date of the unreleased section. For now
-        # explicitly assume UTC, but that should probably be an input.
+        # Change the version and date of the unreleased section.
         self.versions[0].version_str = next_version
         self.versions[0].date = date.isoformat()
+        self.versions.insert(0, ChangelogVersion.blank_unreleased())
 
     def render(self) -> str:
         """Render the CHANGELOG to markdown."""
