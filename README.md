@@ -30,7 +30,7 @@ Usage of this tool requires adding three workflows to each calling repository (n
 1. Compute the target version number.
   * Semantic repositories compute the version based on existing tags and user input for the bump type (`major`/`minor`/`patch`) and the prerelease flag.
   * Non-semantic repositories accept the next version as an input.
-1. Re-write the `CHANGELOG.md` file to move unreleased changes into a new dated release section.
+1. Re-write the `CHANGELOG.md` file to move unreleased changes into a new dated release section, leaving an empty `Unreleased` section at the top for future changes.
 1. (Optional) Update hardcoded version strings in files passed to `version_files` input.
 1. Open a PR listing the target version number and release tag.
 
